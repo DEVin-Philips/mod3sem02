@@ -1,15 +1,15 @@
-import { AppModule } from "src/app/app.module";
-import { ContentComponent } from "./content.component";
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NotificationService } from "src/app/services/notification.service";
 import { of } from "rxjs";
 
-
+import { NOTIFICATIONS_MOCK } from '../../utils/notifications-mock';
+import { AppModule } from "src/app/app.module";
+import { ContentComponent } from "./content.component";
+import { NotificationService } from "src/app/services/notification.service";
 
 describe('ContentComponent', () =>{
     let fixture: ComponentFixture<ContentComponent>;
     let component:ContentComponent;
-    let notificationService =  jasmine.createSpyObj(NotificationService, ['editNotificationApi', 'getNotifications']);
+    let notificationService =  jasmine.createSpyObj(NotificationService, ['editNotificationApi', 'getNotifications', 'removeNotification']);
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -19,12 +19,10 @@ describe('ContentComponent', () =>{
         })
         .compileComponents();  // compila o componente (html, ts e css)
 
-      });
-     
-      beforeEach(() => {         
-        //criação do componente ContentComponent para realização dos testes
-        fixture = TestBed.createComponent(ContentComponent);
-        component = fixture.componentInstance; 
+         //criação do componente ContentComponent para realização dos testes
+         fixture = TestBed.createComponent(ContentComponent);
+         component = fixture.componentInstance;
+
       });
 
         it('Should create component', () => {
@@ -39,12 +37,11 @@ describe('ContentComponent', () =>{
             expect(component.carregarNotificacoes).toHaveBeenCalled();
         });
         
-        it('#lerNotificacao - Should call atualizarLista method with success', () => {
+        it('lerNotificacao - Should call atualizarLista method with success', () => {
             spyOn(component, 'atualizarLista');
-            const notificacaoMock = {aplicativo: '', titulo:'', descricao: '', tempoPublicacao: '',
+            const notificacaoMock =  {aplicativo: '', titulo:'', descricao: '', tempoPublicacao: '',
                                     imagem: '', lido: false, id: 1};
-            const notificacaoEditadaMock = { ...notificacaoMock, lido: true };                                    
-                                
+            const notificacaoEditadaMock = { ...notificacaoMock, lido: true};      
             notificationService.editNotificationApi.and.returnValue(of({}));            
             
             component.lerNotificacao(notificacaoMock);
@@ -52,5 +49,31 @@ describe('ContentComponent', () =>{
             expect(notificationService.editNotificationApi).toHaveBeenCalledWith(notificacaoEditadaMock);
             expect(component.atualizarLista).toHaveBeenCalled();
         });
+
+        it('atualizarLista - Should call carregarNotificacoes method with success', () => {
+           spyOn(component, 'carregarNotificacoes');             
+            component.atualizarLista();
+ 
+            expect(component.carregarNotificacoes).toHaveBeenCalled();
+        });
+
+        it('carregarNotificacoes - Should return values to listaDeNotificacoes with success', () => {
+           notificationService.getNotifications.and.returnValue(of( NOTIFICATIONS_MOCK));      
+           component.carregarNotificacoes();
+     
+           expect(notificationService.getNotifications).toHaveBeenCalled(); 
+           expect(component.listaDeNotificacoes).toEqual(NOTIFICATIONS_MOCK);   
+        });
+
+        it('removerNotificacao - Should call atualizarLista method with success', () => {
+            spyOn(component, 'atualizarLista');
+            
+            notificationService.removeNotification.and.returnValue(of({}));            
+            
+            component.removerNotificacao(1);
+
+            expect(notificationService.removeNotification).toHaveBeenCalled();
+            expect(component.atualizarLista).toHaveBeenCalled(); 
+         });
 });
  
