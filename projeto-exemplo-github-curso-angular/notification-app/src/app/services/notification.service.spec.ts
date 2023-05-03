@@ -1,9 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from "rxjs";  
+import { TestBed } from '@angular/core/testing'; 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
 import { NOTIFICATIONS_MOCK } from '../utils/notifications-mock';
-import { AppModule } from "src/app/app.module"; 
+
 import { NotificationService } from "src/app/services/notification.service";
 import { HttpClient } from '@angular/common/http';
 
@@ -36,8 +34,7 @@ describe('NotificationService', () =>{
           
             notificationService.getNotifications().subscribe((data) => {
              expect(data).toEqual(NOTIFICATIONS_MOCK);
-            });
- 
+            }); 
       });
 
       it('getNotificationsApi - Should call method with success', () => { 

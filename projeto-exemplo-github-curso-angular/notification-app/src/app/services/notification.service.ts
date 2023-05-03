@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+
 import { INotificacao } from '../models/notificacao.model';
 import { NOTIFICATIONS_MOCK } from '../utils/notifications-mock';
 
