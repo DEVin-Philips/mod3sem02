@@ -16,7 +16,7 @@ export class ContentComponent implements OnInit {
   constructor(private notificationService: NotificationService) {}
 
   ngOnInit() {
-    this.carregarNotificacoes();
+   this.carregarNotificacoes();
   }
 
   lerNotificacao(notificacao: INotification) {

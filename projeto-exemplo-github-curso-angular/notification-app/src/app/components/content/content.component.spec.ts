@@ -24,19 +24,20 @@ describe('ContentComponent', () =>{
          component = fixture.componentInstance;
 
       });
+ 
 
         it('Should create component', () => {
             expect(component).toBeTruthy();
         });
  
-    
+    describe('submit', () =>{
         it('ngOnInit - Should call carregarNotificacoes method with success', () =>{
             spyOn(component, 'carregarNotificacoes');
             component.ngOnInit();
 
             expect(component.carregarNotificacoes).toHaveBeenCalled();
-        });
-        
+        }); 
+
         it('lerNotificacao - Should call atualizarLista method with success', () => {
             spyOn(component, 'atualizarLista');
             const notificacaoMock =  {aplicativo: '', titulo:'', descricao: '', tempoPublicacao: '',
@@ -49,14 +50,15 @@ describe('ContentComponent', () =>{
             expect(notificationService.editNotificationApi).toHaveBeenCalledWith(notificacaoEditadaMock);
             expect(component.atualizarLista).toHaveBeenCalled();
         });
-
+    });
+   
         it('atualizarLista - Should call carregarNotificacoes method with success', () => {
-           spyOn(component, 'carregarNotificacoes');             
-            component.atualizarLista();
- 
-            expect(component.carregarNotificacoes).toHaveBeenCalled();
-        });
-
+            spyOn(component, 'carregarNotificacoes');             
+             component.atualizarLista();
+  
+             expect(component.carregarNotificacoes).toHaveBeenCalled();
+         });
+  
         it('carregarNotificacoes - Should return values to listaDeNotificacoes with success', () => {
            notificationService.getNotifications.and.returnValue(of( NOTIFICATIONS_MOCK));      
            component.carregarNotificacoes();
